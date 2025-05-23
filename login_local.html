@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login do Cliente</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0 16px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      width: 100%;
+      background-color: #28a745;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .mensagem {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        margin: 20px;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Login do Cliente</h2>
+    <form id="formLogin">
+      <input type="text" id="usuario" placeholder="Usuário" required />
+      <input type="password" id="senha" placeholder="Senha" required />
+      <button type="submit">Entrar</button>
+    </form>
+    <div class="mensagem" id="mensagem"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("formLogin");
+    const mensagem = document.getElementById("mensagem");
+
+    // Recupera usuários do localStorage
+    function obterUsuarios() {
+      return JSON.parse(localStorage.getItem("usuarios") || "[]");
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const usuario = document.getElementById("usuario").value.trim();
+      const senha = document.getElementById("senha").value;
+
+      if (!usuario || !senha) {
+        mensagem.textContent = "Preencha todos os campos.";
+        mensagem.style.color = "red";
+        return;
+      }
+
+      const usuarios = obterUsuarios();
+      const usuarioValido = usuarios.find(u => u.usuario === usuario && u.senha === senha);
+
+      if (usuarioValido) {
+        mensagem.textContent = "Login bem-sucedido!";
+        mensagem.style.color = "green";
+
+        // Simulação de redirecionamento
+        setTimeout(() => {
+          alert(`Bem-vindo, ${usuarioValido.nome}!`);
+          // window.location.href = "dashboard.html"; // caso tenha uma próxima página
+        }, 1000);
+      } else {
+        mensagem.textContent = "Usuário ou senha incorretos.";
+        mensagem.style.color = "red";
+      }
+    });
+  </script>
+
+</body>
+</html>
