@@ -188,3 +188,56 @@ npx cypress open
 ### Pasta zipada com arquivos de teste do cypress:
 https://drive.google.com/file/d/1Fhz3OgxHGZRKgw04xt2Eh94aXw8Y_hHf/view?usp=sharing
 
+Aqui está um **exemplo concreto de caso de teste** com Cypress para um **formulário de contato** em uma aplicação web fictícia. O cenário cobre um envio bem-sucedido do formulário.
+
+---
+
+### 🧪 Cenário: Envio bem-sucedido do formulário de contato
+
+#### ✅ Requisitos:
+
+* A URL do formulário é: `https://exemplo.com/contato`
+* Os campos obrigatórios:
+
+  * Nome (`input[name=nome]`)
+  * Email (`input[name=email]`)
+  * Mensagem (`textarea[name=mensagem]`)
+* Botão de envio: `button[type=submit]`
+* Ao enviar corretamente, uma mensagem de confirmação: `"Mensagem enviada com sucesso!"` aparece.
+
+---
+
+### 📄 `cypress/e2e/contato.cy.js`
+
+```js
+describe('Formulário de Contato', () => {
+  beforeEach(() => {
+    cy.visit('https://exemplo.com/contato');
+  });
+
+  it('Deve enviar a mensagem com sucesso', () => {
+    cy.get('input[name=nome]').type('João da Silva');
+    cy.get('input[name=email]').type('joao@teste.com');
+    cy.get('textarea[name=mensagem]').type('Olá, gostaria de mais informações.');
+
+    cy.get('button[type=submit]').click();
+
+    cy.contains('Mensagem enviada com sucesso!').should('be.visible');
+  });
+});
+```
+
+---
+
+### 🛠️ Explicação
+
+* `cy.visit(...)`: acessa a página de contato.
+* `cy.get(...).type(...)`: preenche os campos.
+* `cy.get(...).click()`: clica no botão de envio.
+* `cy.contains(...).should(...)`: verifica se a confirmação aparece.
+
+---
+
+### Pasta zipada com o teste do projeto Cypress completo:
+https://drive.google.com/file/d/18jSYUph1qxpQwGiqZzeCHWrqInLPX6_p/view?usp=sharing
+
