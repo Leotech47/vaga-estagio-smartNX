@@ -241,3 +241,116 @@ describe('Formulário de Contato', () => {
 ### Pasta zipada com o teste do projeto Cypress completo:
 https://drive.google.com/file/d/18jSYUph1qxpQwGiqZzeCHWrqInLPX6_p/view?usp=sharing
 
+Aqui está um exemplo completo de teste com Cypress que cobre:
+
+1. **Teste de Interface do Usuário (UI)**
+2. **Teste de API**
+3. **Verificação de DOM e estados da aplicação**
+4. **Depuração em tempo real com recarregamento automático**
+5. **Captura de screenshots e vídeos**
+6. **Execução contínua (CI/CD)**
+
+---
+
+### 📄 Exemplo: Aplicação de lista de tarefas (To-Do List)
+
+#### Funcionalidades:
+
+* A página exibe uma lista de tarefas.
+* O usuário pode adicionar uma nova tarefa.
+* A aplicação consome uma API para salvar a tarefa.
+* Tarefas salvas aparecem na lista (verificação de DOM).
+
+---
+
+### 📁 `cypress/e2e/todo.cy.js`
+
+```js
+describe('To-Do List - Funcionalidades completas', () => {
+  beforeEach(() => {
+    // 1. UI: Acessa a página inicial
+    cy.visit('/');
+  });
+
+  it('Deve adicionar uma nova tarefa com sucesso', () => {
+    const novaTarefa = 'Estudar Cypress';
+
+    // 2. UI: Simula digitação e clique
+    cy.get('input[name=tarefa]').type(novaTarefa);
+    cy.get('button#adicionar-tarefa').click();
+
+    // 3. DOM: Verifica se a tarefa aparece na lista
+    cy.get('.lista-tarefas').should('contain', novaTarefa);
+  });
+
+  it('Deve testar diretamente a API de criação de tarefas', () => {
+    // 4. API: Envia requisição POST e valida resposta
+    cy.request('POST', '/api/tarefas', {
+      descricao: 'Tarefa via API',
+      feita: false
+    }).then((res) => {
+      expect(res.status).to.eq(201);
+      expect(res.body).to.have.property('descricao', 'Tarefa via API');
+    });
+  });
+});
+```
+
+---
+
+### 📸 **Captura de screenshots e vídeos**
+
+* Cypress **automaticamente tira screenshots** em falhas.
+* Para capturar manualmente:
+
+```js
+cy.screenshot(); // Captura o estado atual da tela
+```
+
+* Para gravação de vídeo:
+
+```bash
+npx cypress run
+```
+
+> Um vídeo de cada teste será salvo em `cypress/videos/`.
+
+---
+
+### 🛠️ **Depuração com recarregamento automático**
+
+* Com `npx cypress open`, o Cypress abre em modo interativo:
+
+  * O navegador é recarregado automaticamente a cada salvamento de arquivo.
+  * Permite “ver” os testes acontecendo passo a passo.
+
+---
+
+### 🔄 **Execução em pipeline CI/CD**
+
+Adicione no `.github/workflows/testes.yml`:
+
+```yaml
+name: Testes Cypress
+
+on: [push]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm install
+      - run: npx cypress run
+```
+
+---
+
+### Segue uma pasta zipada com arquivos para executar um teste completo com Cypress:
+https://drive.google.com/file/d/1aurK9HX9afvPJJV3f8p2B2-a9xd5Z0_S/view?usp=sharing
+
+
